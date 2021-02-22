@@ -3,11 +3,16 @@ package com.example.socials;
 import android.app.Application;
 
 import com.parse.Parse;
+import com.parse.ParseObject;
 
 public class ParseApplication extends Application {
 
     @Override
     public void onCreate() {
+
+        //register parse models
+        ParseObject.registerSubclass(Post.class);
+
         super.onCreate();
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId("vt44uykAJy4Sd7uUUzoQxgmHzNOSqAJNRHryKHJs")

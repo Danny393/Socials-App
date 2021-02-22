@@ -14,12 +14,14 @@ import android.widget.Toast;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 public class LoginActivity extends AppCompatActivity {
 
     EditText etUsername;
     EditText etPassword;
     Button btnLogin;
+    Button btnSignup;
     String TAG = "LoginActivity";
 
     @Override
@@ -34,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.username);
         etPassword = findViewById(R.id.password);
         btnLogin = findViewById(R.id.login);
+        btnSignup = findViewById(R.id.signup);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +45,29 @@ public class LoginActivity extends AppCompatActivity {
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
                 loginUser(username, password);
+            }
+        });
+
+        btnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser user = new ParseUser();
+                // Set core properties
+                String username = etUsername.getText().toString();
+                String password = etPassword.getText().toString();
+
+                user.setUsername(username);
+                user.setPassword(password);
+
+                user.signUpInBackground(new SignUpCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if(e != null){
+                            Log.e(TAG, "Error signing up");
+                        }
+                        loginUser(username, password);
+                    }
+                });
             }
         });
     }
@@ -56,8 +82,8 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Issue with Login", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                goMainActivity();
                 Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                goMainActivity();
             }
         });
     }

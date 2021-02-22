@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:ems="10"
-        android:hint="@string/prompt_email"/>
+        android:hint="Username"/>
 
     <EditText
         android:id="@+id/password"
@@ -27,6 +27,13 @@
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/action_sign_in" />
+        android:text="Log In" />
+
+    <Button
+        android:id="@+id/signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign up"/>
+
 
 </LinearLayout>
