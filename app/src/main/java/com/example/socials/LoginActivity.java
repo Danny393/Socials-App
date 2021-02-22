@@ -64,6 +64,8 @@ public class LoginActivity extends AppCompatActivity {
                     public void done(ParseException e) {
                         if(e != null){
                             Log.e(TAG, "Error signing up");
+                            Toast.makeText(LoginActivity.this, "Issue with Sign Up", Toast.LENGTH_SHORT).show();
+                            return;
                         }
                         loginUser(username, password);
                     }
@@ -79,10 +81,9 @@ public class LoginActivity extends AppCompatActivity {
             public void done(ParseUser user, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Login Error", e);
-                    Toast.makeText(LoginActivity.this, "Issue with Login", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Issue with Log In", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                 goMainActivity();
             }
         });

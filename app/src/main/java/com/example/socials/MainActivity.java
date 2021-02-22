@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 ParseUser user = ParseUser.getCurrentUser();
                 savePosts(user, description, photoFile);
+                Toast.makeText(MainActivity.this,"Post Successful", Toast.LENGTH_SHORT).show();
             }
         });
 
