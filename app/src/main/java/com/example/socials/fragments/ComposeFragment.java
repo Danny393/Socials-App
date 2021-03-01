@@ -68,8 +68,8 @@ public class ComposeFragment extends Fragment {
         btnCamera = view.findViewById(R.id.btnPicture);
         ivPicture = view.findViewById(R.id.ivImage);
         btnPost = view.findViewById(R.id.btnPost);
-        btnLogOut = view.findViewById(R.id.btnLogOut);
 
+        /*
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,6 +80,7 @@ public class ComposeFragment extends Fragment {
                 //finish();
             }
         });
+        */
 
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override

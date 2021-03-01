@@ -5,7 +5,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,17 +15,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.socials.Post;
+import com.example.socials.PostsAdapter;
 import com.example.socials.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PostsFragment extends Fragment {
 
     RecyclerView rvPosts;
     String TAG = "Posts Fragment";
+    PostsAdapter adapter;
+    List<Post> allPosts;
+    SwipeRefreshLayout swipeContainer;
 
     public PostsFragment() {
         // Required empty public constructor
@@ -41,11 +49,27 @@ public class PostsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         rvPosts = view.findViewById(R.id.rvPosts);
+        swipeContainer = view.findViewById(R.id.swipe);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                queryPosts();
+            }
+        });
+
+        allPosts = new ArrayList<>();
+        adapter = new PostsAdapter(getContext(), allPosts);
+
+        rvPosts.setAdapter(adapter);
+        rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
+        queryPosts();
     }
 
     public void queryPosts(){
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.include("user");
+        query.include(Post.KEY_USER);
+        query.setLimit(20);
+        query.addDescendingOrder(Post.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
@@ -57,6 +81,9 @@ public class PostsFragment extends Fragment {
                 for(Post post : posts){
                     Log.i(TAG, "Post: " + post.getDescription() + ", Username: " + post.getUser().getUsername());
                 }
+                adapter.clear();
+                adapter.addAll(posts);
+                swipeContainer.setRefreshing(false);
             }
         });
     }
